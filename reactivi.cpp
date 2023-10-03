@@ -12,7 +12,7 @@ struct Reactiv
 	int temperaturaMinima, temperaturaMaxima;
 };
 
-bool ordonezCrescatorDupaTemperaturaMinima(Reactiv r1, Reactiv r2);
+bool compar(Reactiv r1, Reactiv r2);
 int min(int a, int b);
 int max(int a, int b); 
 
@@ -28,12 +28,13 @@ int main()
 
 	for (i = 0; i < nrReactivi; i++)
 	{
-		fin >> reactivi[i].temperaturaMinima >> reactivi[i].temperaturaMaxima;
+		fin >> reactivi[i].temperaturaMinima;
+		fin >> reactivi[i].temperaturaMaxima;
 	}
 
 	fin.close();
 
-	sort(reactivi, reactivi + nrReactivi, ordonezCrescatorDupaTemperaturaMinima);
+	sort(reactivi, reactivi + nrReactivi, compar);
 
 	nrFrigidere = 1;
 	temperaturaMinimaFrigider = reactivi[0].temperaturaMinima;
@@ -41,22 +42,16 @@ int main()
 	
 	for (i = 1; i < nrReactivi; i++)
 	{
-		if (reactivi[i].temperaturaMinima > temperaturaMaximaFrigider)
+		if (reactivi[i].temperaturaMaxima < temperaturaMinimaFrigider)
 		{
 			nrFrigidere++;
-
 			temperaturaMinimaFrigider = reactivi[i].temperaturaMinima;
 			temperaturaMaximaFrigider = reactivi[i].temperaturaMaxima;
 		}
 		else
 		{
-			temperaturaMinimaFrigider = max(reactivi[i].temperaturaMinima, reactivi[i-1].temperaturaMinima);
-			temperaturaMaximaFrigider = min(reactivi[i].temperaturaMaxima, reactivi[i-1].temperaturaMaxima);
-		}
-
-		if (temperaturaMinimaFrigider > temperaturaMaximaFrigider)
-		{
-			temperaturaMinimaFrigider = temperaturaMaximaFrigider;
+			temperaturaMinimaFrigider = max(reactivi[i].temperaturaMinima, temperaturaMinimaFrigider);
+			temperaturaMaximaFrigider = min(reactivi[i].temperaturaMaxima, temperaturaMaximaFrigider);
 		}
 	}
 
@@ -69,9 +64,9 @@ int main()
 	return 0;
 }
 
-bool ordonezCrescatorDupaTemperaturaMinima(Reactiv r1, Reactiv r2)
+bool compar(Reactiv r1, Reactiv r2)
 {
-	return r1.temperaturaMinima < r2.temperaturaMinima;
+	return r1.temperaturaMaxima > r2.temperaturaMaxima;
 }
 
 int min(int a, int b)
@@ -83,4 +78,4 @@ int max(int a, int b)
 {
 	return a > b ? a : b;
 }
-// scor 40
+// scor 100
